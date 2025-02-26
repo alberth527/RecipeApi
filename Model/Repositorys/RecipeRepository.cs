@@ -9,7 +9,7 @@ namespace CommonApi.Model.Repositorys
         public RecipeRepository()
         {
             TableName = "Recipe";
-            DBName = "Connsql";
+            DBName = "NGsql";
         }
         public int AddRecipe(Recipe item)
         {

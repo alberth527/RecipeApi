@@ -20,7 +20,7 @@ namespace CommonApi.Controllers
         public APIResult Get()
         {
             var result = new APIResult();
-            result.Data=DB.SQLConnection.Query<dynamic>("SELECT id, title, description\r\nFROM public.recipes;").ToList();
+            result.Data=DB.NGConnection.Query<dynamic>("SELECT id, title, description\r\nFROM public.recipes;").ToList();
 
             
 

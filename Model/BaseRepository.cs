@@ -6,6 +6,8 @@ using Microsoft.Data.SqlClient;
 
 using NLog;
 
+using Npgsql;
+
 using System.Collections;
 using System.Data;
 
@@ -45,10 +47,10 @@ namespace Comm.Model
             //conn = new SqlConnection(setting.ConnectionStrings.SQLComm);
 
             IDbConnection conn = null;
-            if (DBName.Contains("SQL"))
+            if (DBName.Contains("NG"))
             {
                 // conn = setting.ConnectionStrings.CDM;
-                conn = new SqlConnection(setting.ConnectionStrings.Connsql);
+                conn = new NpgsqlConnection(setting.ConnectionStrings.Connsql);
 
             }
             return conn;

@@ -25,7 +25,7 @@ namespace Comm.WebUtil
         /// <summary>
         /// SQLConnection
         /// </summary>
-        public IDbConnection SQLConnection
+        public IDbConnection NGConnection
         {
             get
             {
