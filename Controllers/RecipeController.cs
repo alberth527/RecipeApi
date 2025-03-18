@@ -74,9 +74,12 @@ namespace CommonApi.Controllers
         /// <summary>
         /// by id 刪除食譜
         /// 
-        [HttpDelete()]
-        public APIResult Delete([FromBody] Recipe recipe)
+        [HttpDelete("{id}")]
+        public APIResult Delete( int id )
         {
+            var recipe = new Recipe();
+            recipe.id = id;
+
             var result = new APIResult();
            
             try
