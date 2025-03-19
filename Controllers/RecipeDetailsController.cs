@@ -16,7 +16,7 @@ namespace CommonApi.Controllers
         public RecipeDetailsController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : base(configuration, httpContextAccessor)
         {
         }
-        [HttpGet("id")]
+        [HttpGet("{id}")]
 
         public APIResult Get(int id)
         {
@@ -24,7 +24,7 @@ namespace CommonApi.Controllers
             var result = new APIResult();
             var query = new RecipeDetails();
             query.recipe_id = id;
-            result.Data = DB.RecipeDetailsRepository.GetItem(query);
+            result.Data = DB.RecipeDetailsRepository.GetItem(query)?.FirstOrDefault();
             return result;
         }
 

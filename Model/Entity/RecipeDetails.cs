@@ -6,6 +6,6 @@
         public string Title { get; set; } // 食谱标题
         public string[] ingredients { get; set; }
         public string[] steps { get; set; }
-        public string ImageUrl { get; set; } // 图片URL
+        public string image_url { get; set; } // 图片URL
     }
 }
