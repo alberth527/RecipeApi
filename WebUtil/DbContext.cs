@@ -66,6 +66,20 @@ namespace Comm.WebUtil
             }
         }
 
+        private MemberRepository _MemberRepository;
+        public MemberRepository MemberRepository
+        {
+            get
+            {
+                if (_MemberRepository == null)
+                {
+                    _MemberRepository = new MemberRepository();
+                  
+                }
+                return _MemberRepository;
+            }
+        }
+
 
 
 

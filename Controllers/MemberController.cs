@@ -1,18 +1,18 @@
-Ôªøusing Comm.Model.Entity;
-
+using Comm.Model.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Dapper;
 using CommonApi.Model.Entity;
-using Microsoft.AspNetCore.Http.HttpResults;
+using System;
+using System.Linq;
 
 namespace CommonApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RecipeController : BaseController
+    public class MemberController : BaseController
     {
-        public RecipeController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : base(configuration, httpContextAccessor)
+        public MemberController(IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : base(configuration, httpContextAccessor)
         {
         }
 
@@ -20,86 +20,82 @@ namespace CommonApi.Controllers
         public APIResult Get()
         {
             var result = new APIResult();
-            result.Data=DB.NGConnection.Query<dynamic>(@"SELECT id, title, description,rd.image_url FROM public.recipes r
-                left join public.recipe_details rd on r.id =rd.recipe_id ;").ToList();
-
-            
-
-        
-            return result;
-        }
-        /// <summary>   
-        /// Êñ∞Â¢ûÈ£üË≠ú
-        /// 
-
-        [HttpPost()]
-        public APIResult Post([FromBody] Recipe recipe)
-        {
-            var result = new APIResult();
             try
             {
-
-            result.IsSuccess= DB.RecipeRepository.AddRecipe(recipe)>0;
-            }
-            catch (Exception ex) 
-            {
-
-                result.IsSuccess = false;
-                result.Data=ex.Message;
-
-            }
-         
-            return result;
-        }
-        /// <summary>
-        /// ‰øÆÊîπÈ£üË≠ú
-        /// 
-        [HttpPatch()]
-        public APIResult Put([FromBody] Recipe recipe)
-        {
-            var result = new APIResult();
-            try
-            {
-
-                result.IsSuccess = DB.RecipeRepository.UpdateRecipe(recipe) > 0;
+                result.Data = DB.NGConnection.Query<dynamic>(@"SELECT * FROM public.members;").ToList();
+                result.IsSuccess = true;
             }
             catch (Exception ex)
             {
-
                 result.IsSuccess = false;
                 result.Data = ex.Message;
-
             }
             return result;
         }
-        /// <summary>
-        /// by id Âà™Èô§È£üË≠ú
-        /// 
-        [HttpDelete("{id}")]
-        public APIResult Delete( int id )
+
+        /// <summary>   
+        /// ∑sºW∑|≠˚
+        /// </summary>
+        [HttpPost()]
+        public APIResult Post([FromBody] Member member)
         {
-            var recipe = new Recipe();
-            recipe.id = id;
+            var result = new APIResult();
+            try
+            {
+                result.IsSuccess = DB.MemberRepository.AddMember(member) > 0;
+            }
+            catch (Exception ex) 
+            {
+                result.IsSuccess = false;
+                result.Data = ex.Message;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// ≠◊ßÔ∑|≠˚∏ÍÆ∆
+        /// </summary>
+        [HttpPatch()]
+        public APIResult Put([FromBody] Member member)
+        {
+            var result = new APIResult();
+            try
+            {
+                result.IsSuccess = DB.MemberRepository.UpdateMember(member) > 0;
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Data = ex.Message;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// ≥zπLidßR∞£∑|≠˚
+        /// </summary>
+        [HttpDelete("{id}")]
+        public APIResult Delete(int id)
+        {
+            var member = new Member();
+            member.Id = id;
 
             var result = new APIResult();
            
             try
             {
-                result.IsSuccess = DB.RecipeRepository.Delete(recipe) > 0;
+                result.IsSuccess = DB.MemberRepository.DeleteMember(member) > 0;
             }
             catch (Exception ex)
             {
-
                 result.IsSuccess = false;
                 result.Data = ex.Message;
-
             }
             return result;
         }
 
-    
-            /// <summary>
-        /// ÊêúÂ∞ãÈ£üË≠ú
+        /// <summary>
+        /// ∑j¥M∑|≠˚
         /// </summary>
         [HttpGet("search")]
         public APIResult Search([FromQuery] string q)
@@ -107,9 +103,7 @@ namespace CommonApi.Controllers
             var result = new APIResult();
             try
             {
-                var query = @"SELECT id, title, description, rd.image_url FROM public.recipes r
-                              LEFT JOIN public.recipe_details rd ON r.id = rd.recipe_id
-                              WHERE title ILIKE @Query OR description ILIKE @Query;";
+                var query = @"SELECT * FROM public.members WHERE name ILIKE @Query OR email ILIKE @Query;";
                 result.Data = DB.NGConnection.Query<dynamic>(query, new { Query = "%" + q + "%" }).ToList();
                 result.IsSuccess = true;
             }

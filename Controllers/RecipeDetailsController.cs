@@ -24,7 +24,8 @@ namespace CommonApi.Controllers
             var result = new APIResult();
             var query = new RecipeDetails();
             query.recipe_id = id;
-            result.Data = DB.RecipeDetailsRepository.GetItem(query)?.FirstOrDefault();
+            result.Data = DB.NGConnection.Query<dynamic>(@"SELECT id, title, description,rd.image_url,rd.ingredients ,rd.steps FROM public.recipes r
+                left join public.recipe_details rd on r.id =rd.recipe_id where rd.recipe_id=@recipe_id", query).FirstOrDefault();
             return result;
         }
 
