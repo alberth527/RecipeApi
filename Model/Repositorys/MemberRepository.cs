@@ -26,10 +26,6 @@ namespace CommonApi.Model.Repositorys
             return Delete(item);
         }
 
-        public IEnumerable<Member> SearchMembers(string query)
-        {
-            var sql = @"SELECT * FROM public.members WHERE name ILIKE @Query OR email ILIKE @Query;";
-            return GetItem(sql, new { Query = "%" + query + "%" });
-        }
+  
     }
 }

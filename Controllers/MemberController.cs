@@ -78,7 +78,7 @@ namespace CommonApi.Controllers
         public APIResult Delete(int id)
         {
             var member = new Member();
-            member.Id = id;
+            member.member_id = id;
 
             var result = new APIResult();
            
@@ -114,5 +114,62 @@ namespace CommonApi.Controllers
             }
             return result;
         }
+        /// <summary>
+        /// 會員登入
+        /// </summary>
+        [HttpPost("login")]
+        public APIResult Login([FromBody] LoginModel model)
+        {
+            var result = new APIResult();
+            try
+            {
+                // 查詢使用者
+                var member = DB.NGConnection.QueryFirstOrDefault<Member>(
+                    "SELECT * FROM public.members WHERE full_name = @full_name",
+                    new { full_name = model.full_name });
+
+                if (member == null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "找不到此帳戶";
+                    return result;
+                }
+
+                // 驗證密碼
+               
+                if (member.Password != model.Password)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "密碼錯誤";
+                    return result;
+                }
+
+                // 登入成功，返回用戶信息（排除密碼）
+                result.IsSuccess = true;
+                result.Message = "登入成功";
+                result.Data = new
+                {
+                    member.member_id,
+                    member.full_name,
+                    member.Email,
+                    member.Phone,
+                    member.date_of_birth,
+                    member.Address,
+                    member.registration_date,
+                    member.Status
+                };
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Data = ex.Message;
+            }
+            return result;
+        }
+    }
+    public class LoginModel
+    {
+        public string full_name { get; set; }
+        public string Password { get; set; }
     }
 }
