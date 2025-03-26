@@ -79,6 +79,19 @@ namespace Comm.WebUtil
                 return _MemberRepository;
             }
         }
+        private MemberFavoriteRepository _MemberFavoriteRepository;
+        public MemberFavoriteRepository MemberFavoriteRepository
+        {
+            get
+            {
+                if (_MemberFavoriteRepository == null)
+                {
+                    _MemberFavoriteRepository = new MemberFavoriteRepository();
+
+                }
+                return _MemberFavoriteRepository;
+            }
+        }
 
 
 
